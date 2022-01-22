@@ -1,6 +1,7 @@
 import React from 'react';
 import {AppBar, Button, makeStyles, Toolbar, Typography,} from "@material-ui/core";
 import {useKeycloak} from "@react-keycloak/web";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     navbar: {
@@ -11,7 +12,12 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+        cursor: "pointer"
     },
+    navbarLink: {
+        textDecoration: "none",
+        color: "white"
+    }
 }));
 
 const Navbar = () => {
@@ -23,16 +29,25 @@ const Navbar = () => {
             <AppBar position="static" elevation={0}>
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
-                        Microservices App
+                        Ecommerce App
                     </Typography>
                     {!keycloak.authenticated && (
                         <Button color="inherit" onClick={() => keycloak.login()}>Login</Button>
                     )}
                     {!!keycloak.authenticated && (
                         <>
-                            <Button color="inherit">Customers</Button>
-                            <Button color="inherit">Products</Button>
-                            <Button color="inherit">Billing</Button>
+                            <Link to="/" className={classes.navbarLink}>
+                                <Button color="inherit">Home</Button>
+                            </Link>
+                            <Link to="/customers" className={classes.navbarLink}>
+                                <Button color="inherit">Customers</Button>
+                            </Link>
+                            <Link to="/products"  className={classes.navbarLink}>
+                                <Button color="inherit">Products</Button>
+                            </Link>
+                            <Link to="/billings" className={classes.navbarLink}>
+                                <Button color="inherit">Billing</Button>
+                            </Link>
                             <Button color="inherit" onClick={() => keycloak.logout()}>Logout ({keycloak.tokenParsed.preferred_username})</Button>
                         </>
                     )}
