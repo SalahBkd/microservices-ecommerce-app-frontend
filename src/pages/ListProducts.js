@@ -40,7 +40,7 @@ const ListProducts = ({productData, fetchProducts}) => {
                     <Grid container>
                             {products.map(product => {
                                 return (
-                                    <Grid item xs={4}>
+                                    <Grid item xs={4} key={product.id}>
                                         <ProductCard product={product} />
                                     </Grid>
                                 )
