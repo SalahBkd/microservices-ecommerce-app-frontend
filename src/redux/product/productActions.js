@@ -6,6 +6,7 @@ import {
     FETCH_PRODUCTS_REQUEST,
     FETCH_PRODUCTS_SUCCESS
 } from "./productTypes";
+import {generateToken} from "../../helpers/GenerateToken";
 
 
 export const fetchProductsRequest = () => {
@@ -65,28 +66,6 @@ export const deleteProductRequest = (product) => {
     }
 }
 
-const generateToken = () => {
-    const params = new URLSearchParams()
-    params.append('username', 'salah')
-    params.append('password', 'today1')
-    params.append('client_id', 'react_auth')
-    params.append('grant_type', 'password')
-
-    const config = {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    }
-    return axios.post("http://localhost:8080/auth/realms/ecommerce-app-realm/protocol/openid-connect/token", params, config)
-        .then(res => {
-            const tokenStr = res.data.access_token;
-            console.log("TOKEN: ", tokenStr)
-            return tokenStr;
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
 
 export const fetchProducts = () => {
     return async (dispatch) => {
@@ -95,7 +74,6 @@ export const fetchProducts = () => {
         axios.get("http://localhost:8888/INVENTORY-SERVICE/products", {headers: {"Authorization": `Bearer ${token}`}})
             .then(response => {
                 const products = response.data;
-                console.log(products)
                 dispatch(fetchProductsSuccess(products));
             })
             .catch(error => {
@@ -150,9 +128,11 @@ export const createProduct = (product) => {
 // }
 
 export const deleteProduct = (product) => {
-    return (dispatch) => {
-        axios.delete(`http://localhost:3100/products/${product.id}`, product)
+    return async (dispatch) => {
+        const token = await generateToken()
+        axios.delete(`http://localhost:8888/INVENTORY-SERVICE/products/${product.id}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(res => {
+                console.log(res.data);
                 dispatch(deleteProductRequest(product))
                 dispatch(fetchProducts())
             })

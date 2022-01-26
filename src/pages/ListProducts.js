@@ -3,7 +3,6 @@ import {Button, Container, Grid, makeStyles, Typography} from "@material-ui/core
 import {fetchProducts} from "../redux/product/productActions";
 import ProductCard from "../components/ProductCard";
 import {connect} from "react-redux";
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,23 +24,28 @@ const ListProducts = ({productData, fetchProducts}) => {
     useEffect(() => {
         fetchProducts()
     }, [])
+
     return (
-        products.length === 0 ? <Typography variant="h6">Aucune Données</Typography> :
+        products.length === 0 ? <Container style={{ marginTop: "40px"}}>
+                <Link to="/addproduct" style={{textDecoration: "none"}}>
+                    <Button variant="contained" color="primary" className={classes.addBtn}>ADD PRODUCT</Button>
+                </Link>
+                <Typography variant="h6">Aucune Données</Typography>
+            </Container> :
             productData.loading ? (
                 <Typography variant="h6">Chargement des Données...</Typography>
             ) : productData.error ? (
                 <Typography variant="h6">ERREUR...</Typography>
             ) : (
                 <Container className={classes.productsContainer}>
-                    <Typography className={classes.title} variant="h5">Products</Typography>
-                    <Link to="/addproduct" style={{textDecoration: "none"}}>
+                    {products.length !== 0 && <Link to="/addproduct" style={{textDecoration: "none"}}>
                         <Button variant="contained" color="primary" className={classes.addBtn}>ADD PRODUCT</Button>
-                    </Link>
+                    </Link>}
                     <Grid container>
                             {products.map(product => {
                                 return (
                                     <Grid item xs={4} key={product.id}>
-                                        <ProductCard product={product} />
+                                        <ProductCard product={product} showDeleteIcon={true}/>
                                     </Grid>
                                 )
                             })}

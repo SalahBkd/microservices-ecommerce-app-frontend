@@ -1,6 +1,9 @@
 import React from 'react';
 import {Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography} from "@material-ui/core";
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
+import {deleteProduct, fetchProducts} from "../redux";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,9 +23,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductCard = ({product}) => {
+const ProductCard = ({product, fetchProducts, deleteProduct, showDeleteIcon}) => {
     const classes = useStyles();
-    console.log(product)
+    const handleDeleteProduct = (product) => {
+        if(window.confirm("Confirm Deletion ?!")) {
+            deleteProduct(product);
+            fetchProducts();
+        }
+    }
     return (
         <>
             <Card className={classes.root}>
@@ -50,6 +58,8 @@ const ProductCard = ({product}) => {
                         <Typography variant="body2" color="textSecondary" component="p" >
                             Quantity: {product.quantity}
                         </Typography>
+                        {showDeleteIcon && <DeleteOutlineOutlinedIcon style={{marginLeft: "90%"}} onClick={() => handleDeleteProduct(product)}/>
+                        }
                     </CardContent>
                 </CardActionArea>
                 {/*<CardActions>*/}
@@ -65,4 +75,11 @@ const ProductCard = ({product}) => {
     );
 };
 
-export default ProductCard;
+const mapDispatchToProps = dispatch => {
+    return {
+        deleteProduct: (product) => dispatch(deleteProduct(product)),
+        fetchProducts: () => dispatch(fetchProducts())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ProductCard);

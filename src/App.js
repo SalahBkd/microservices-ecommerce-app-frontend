@@ -12,6 +12,8 @@ import store from "./redux/store";
 import ListProducts from "./pages/ListProducts";
 import AddProduct from "./pages/AddProduct";
 import ListBillings from "./pages/ListBillings";
+import GenerateBill from "./pages/GenerateBill";
+import ViewBill from "./pages/ViewBill";
 
 const App = () => {
     return (
@@ -45,6 +47,16 @@ const App = () => {
                             <Route path="/billings" element={
                                 <PrivateRoute>
                                     <ListBillings />
+                                </PrivateRoute>
+                            } />
+                            <Route path="/generatebill" element={
+                                <PrivateRoute>
+                                    <GenerateBill />
+                                </PrivateRoute>
+                            } />
+                            <Route path="/viewbill" element={
+                                <PrivateRoute>
+                                    <ViewBill />
                                 </PrivateRoute>
                             } />
                         </Routes>

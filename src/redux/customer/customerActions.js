@@ -10,6 +10,7 @@ import {
     // UPDATE_CUSTOMER_REQUEST
 } from "./customerTypes";
 import axios from "axios";
+import {generateToken} from "../../helpers/GenerateToken";
 
 
 export const fetchCustomersRequest = () => {
@@ -70,9 +71,10 @@ export const deleteCustomerRequest = (customer) => {
 }
 
 export const fetchCustomers = () => {
-    return (dispatch) => {
+    return async (dispatch) => {
+        const token = await generateToken();
         dispatch(fetchCustomersRequest());
-        axios.get("http://localhost:3100/customers")
+        axios.get("http://localhost:8888/CUSTOMER-SERVICE/customers", {headers: {"Authorization": `Bearer ${token}`}})
             .then(response => {
                 const customers = response.data;
                 dispatch(fetchCustomersSuccess(customers));
@@ -85,7 +87,8 @@ export const fetchCustomers = () => {
 }
 
 export const createCustomer = (customer) => {
-    return (dispatch) => {
+    return async (dispatch) => {
+        const token = await generateToken();
         const updatedCustomer = {
             id: customer.id,
             name: customer.name,
@@ -94,7 +97,7 @@ export const createCustomer = (customer) => {
             quantity: customer.quantity
         }
         console.log(updatedCustomer)
-        axios.post("http://localhost:3100/customers", customer)
+        axios.post("http://localhost:8888/CUSTOMER-SERVICE/customers", customer, {headers: {"Authorization": `Bearer ${token}`}})
             .then(res => {
                 const newCustomer = res.data;
                 dispatch(createCustomerRequest(newCustomer))
@@ -134,8 +137,9 @@ export const createCustomer = (customer) => {
 // }
 
 export const deleteCustomer = (customer) => {
-    return (dispatch) => {
-        axios.delete(`http://localhost:3100/customers/${customer.id}`, customer)
+    return async (dispatch) => {
+        const token = await generateToken();
+        axios.delete(`http://localhost:8888/CUSTOMER-SERVICE/customers/${customer.id}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(res => {
                 dispatch(deleteCustomerRequest(customer))
                 dispatch(fetchCustomers())

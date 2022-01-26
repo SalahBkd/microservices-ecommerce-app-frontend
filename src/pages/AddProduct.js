@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Container, makeStyles, TextField, Typography} from "@material-ui/core";
 import {useNavigate} from "react-router-dom";
-import {createCustomer, createProduct, fetchCustomers, fetchProducts} from "../redux";
+import {createProduct, fetchProducts} from "../redux";
 import {connect} from "react-redux";
 // import {useHistory} from "react-router-dom";
 
@@ -49,6 +49,14 @@ const AddProduct = ({createProduct, fetchProducts}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const newProduct = {
+            name: product.name,
+            description: product.description,
+            price: Number(product.price),
+            quantity: Number(product.price)
+        }
+        console.log("PRODUCT: ", newProduct)
+
         createProduct(product)
         fetchProducts()
         navigate("/products")

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Container, makeStyles} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     btns: {
@@ -17,8 +18,13 @@ const ListBillings = () => {
     return (
         <Container>
             <div className={classes.btns}>
-                <Button variant="contained" color="primary">Generate Bill</Button>
-                <Button variant="contained" color="primary" className={classes.btn}>View Bill</Button>
+                <Link to="/generatebill" style={{textDecoration: "none"}}>
+                    <Button variant="contained" color="primary">Generate Bill</Button>
+                </Link>
+                <Link to="/viewbill" style={{textDecoration: "none"}}>
+                    <Button variant="contained" color="primary" className={classes.btn}>View Bill</Button>
+                </Link>
+
             </div>
         </Container>
     );

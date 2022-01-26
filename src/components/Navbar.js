@@ -39,11 +39,11 @@ const Navbar = () => {
                             <Link to="/" className={classes.navbarLink}>
                                 <Button color="inherit">Home</Button>
                             </Link>
-                            <Link to="/customers" className={classes.navbarLink}>
-                                <Button color="inherit">Customers</Button>
-                            </Link>
                             <Link to="/products"  className={classes.navbarLink}>
                                 <Button color="inherit">Products</Button>
+                            </Link>
+                            <Link to="/customers" className={classes.navbarLink}>
+                                <Button color="inherit">Customers</Button>
                             </Link>
                             <Link to="/billings" className={classes.navbarLink}>
                                 <Button color="inherit">Billing</Button>
